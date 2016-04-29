@@ -1,0 +1,9 @@
+---
+- name: grub2 mkconfig
+  shell: grub2-mkconfig -o {{ grub_conf }}
+
+- name: print restart required?
+  debug: 
+    msg: 'A restart of {{ ansible_hostname }} is now required due to Grub 
+          bootloader changes.'
+  when: grub_cmdline_params not in proc_cmdline.stdout

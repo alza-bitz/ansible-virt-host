@@ -1,0 +1,29 @@
+---
+
+- name: Set fact for grub config location
+  set_fact:
+    grub_conf:
+      "{{ '/boot/efi/EFI/fedora/grub.cfg' 
+          if ansible_mounts | selectattr('mount', 'equalto', '/boot/efi') | list | count > 0
+          else '/boot/grub2/grub.cfg' }}"
+
+- name: Set fact for grub command line params
+  set_fact:
+    grub_cmdline_params: intel_iommu=on
+
+- name: Register proc cmdline
+  shell: printf "$(< /proc/cmdline)"
+  register: proc_cmdline
+  changed_when: false
+
+- name: Modify grub cmdline, if enable_iommu defined
+  lineinfile:
+    dest: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX="((?!.*{{ grub_cmdline_params }}).*)"$'
+    backrefs: yes
+    line: 'GRUB_CMDLINE_LINUX="\1 {{ grub_cmdline_params }}"'
+    backup: yes
+  become: yes
+  notify:
+    - grub2 mkconfig
+    - print restart required?

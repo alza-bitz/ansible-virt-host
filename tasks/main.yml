@@ -1,0 +1,25 @@
+---
+
+- name: Add OVMF UEFI firmware package repository
+  get_url: 
+    url=https://www.kraxel.org/repos/firmware.repo
+    dest=/etc/yum.repos.d/
+  become: yes
+
+- name: Add Windows virtio package repository
+  get_url:
+    url=https://fedorapeople.org/groups/virt/virtio-win/virtio-win.repo
+    dest=/etc/yum.repos.d/
+  become: yes
+
+- name: Install required packages
+  package: name={{ item }} state=present
+  with_items:
+    - '@virtualization'
+    - edk2.git-ovmf-x64
+    - virtio-win
+  become: yes
+
+- include: iommu.yml
+  when: enable_iommu is defined and enable_iommu
+
