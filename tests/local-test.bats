@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+load 'bats-ansible/load'
+
 @test "Role syntax" {
-    ansible-playbook -i hosts test.yml --syntax-check
+    ansible-playbook ${BATS_TEST_DIRNAME}/test.yml --syntax-check
 }
