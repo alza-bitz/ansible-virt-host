@@ -1,29 +1,26 @@
 ---
+
 language: python
-python: "2.7"
+python:
+  - 2.7
 
-# Use the new container infrastructure
-sudo: false
+sudo: required
+dist: trusty
 
-# Install ansible
-addons:
-  apt:
-    packages:
-    - python-pip
+cache:
+  - pip
+
+services:
+  - docker
 
 install:
-  # Install ansible
-  - pip install ansible
-
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - git clone https://github.com/sstephenson/bats.git ../bats
+  - pushd ../bats && ./install.sh ~/bats-install && popd
+  - mkdir ~/bin
+  - ln -s ~/bats-install/bin/bats ~/bin/bats
 
 script:
-  # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  - bats tests/
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
