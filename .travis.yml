@@ -7,10 +7,14 @@ python:
 sudo: required
 dist: trusty
 
+cache:
+  - pip
+
 services:
   - docker
 
 install:
+  - pip install --user ansible
   - git clone https://github.com/sstephenson/bats.git ../bats
   - pushd ../bats && ./install.sh ~/bats-install && popd
   - mkdir ~/bin
