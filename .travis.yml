@@ -7,9 +7,6 @@ python:
 sudo: required
 dist: trusty
 
-cache:
-  - pip
-
 services:
   - docker
 
