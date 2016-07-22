@@ -13,6 +13,10 @@ cache:
 services:
   - docker
 
+before_install:
+  # Ansible doesn't play well with virtualenv
+  - deactivate
+
 install:
   - pip install --user ansible
   - git clone https://github.com/sstephenson/bats.git ../bats
