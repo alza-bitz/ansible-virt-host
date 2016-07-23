@@ -1,6 +1,7 @@
 ---
 - name: grub2 mkconfig
   shell: grub2-mkconfig -o {{ grub_conf }}
+  become: yes
 
 - name: print restart required?
   debug: 
