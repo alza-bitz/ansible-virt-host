@@ -1,11 +1,4 @@
-#- hosts: container
-#  remote_user: test
-#  become: true
-#  gather_facts: false
-#
-#  tasks:
-#    - name: Install Python 2 and dependencies for Ansible modules
-#      raw: dnf install -y python2 python2-dnf libselinux-python
+---
 
 - hosts: container
   remote_user: test
