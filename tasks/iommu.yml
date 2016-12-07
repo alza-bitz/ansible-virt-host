@@ -9,14 +9,48 @@
 
 - name: Set fact for grub command line params
   set_fact:
-    grub_cmdline_params: intel_iommu=on
+    grub_cmdline_params: intel_iommu=on rd.driver.pre=vfio-pci
 
 - name: Register proc cmdline
   shell: printf "$(< /proc/cmdline)"
   register: proc_cmdline
   changed_when: false
 
-- name: Modify grub cmdline, if enable_iommu defined
+# http://vfio.blogspot.co.uk/2015/05/vfio-gpu-how-to-series-part-3-host.html
+- name: Install vfio pci override script
+  copy: src=vfio-pci-override-vga.sh dest=/usr/local/sbin mode=0755
+  notify:
+    - dracut
+
+- name: Configure vfio drivers and vfio pci override script in initrd
+  copy:
+    content: |
+      add_drivers+="vfio vfio_iommu_type1 vfio_pci vfio_virqfd"
+      install_items+="/usr/local/sbin/vfio-pci-override-vga.sh /usr/bin/find /usr/bin/dirname /usr/bin/sed"
+    dest: /etc/dracut.conf.d/vfio-pci.conf
+  notify:
+    - dracut
+
+- name: Reserve any non-boot vga devices for vfio in initrd
+  copy:
+    content: install vfio-pci /usr/local/sbin/vfio-pci-override-vga.sh
+    dest: /etc/modprobe.d/vfio-pci.conf
+  notify:
+    - dracut
+
+# TODO add any specified users to kvm group
+
+- name: Configure limits for vfio
+  copy: src=10-vfio-pci-kvm-group.conf dest=/etc/security/limits.d/
+  notify:
+    - print restart required?
+
+- name: Configure udev for vfio
+  copy: src=10-vfio-pci-kvm-group.rules dest=/etc/udev/rules.d/
+  notify:
+    - udevadm
+
+- name: Modify grub cmdline
   lineinfile:
     dest: /etc/default/grub
     regexp: '^GRUB_CMDLINE_LINUX="((?!.*{{ grub_cmdline_params }}).*)"$'

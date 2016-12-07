@@ -1,9 +1,15 @@
 ---
 - name: grub2 mkconfig
-  shell: grub2-mkconfig -o {{ grub_conf }}
+  command: grub2-mkconfig -o {{ grub_conf }}
+
+- name: dracut
+  shell: cp -p /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r).img.ansible-virt-host-$(date -u +%F@%H:%M:%S) && dracut -f
+
+- name: udevadm
+  shell: udevadm control --reload-rules && udevadm trigger
 
 - name: print restart required?
   debug: 
     msg: 'A restart of {{ ansible_hostname }} is now required due to Grub 
-          bootloader changes.'
+          bootloader and/or initrd changes.'
   when: grub_cmdline_params not in proc_cmdline.stdout

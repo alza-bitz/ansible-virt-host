@@ -2,6 +2,7 @@
 
 - hosts: container
   remote_user: test
+  become: true
 
   roles:
     - ansible-virt-host
