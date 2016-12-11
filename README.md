@@ -148,11 +148,11 @@ Troubleshooting
 
 - Intel HDMI/DP Audio Broken with `intel_iommu=on`
 
-  Fix: Don't use a Haswell CPU: https://bbs.archlinux.org/viewtopic.php?id=204460, https://bugzilla.kernel.org/show_bug.cgi?id=60769
+  Fix - Don't use a Haswell CPU: https://bbs.archlinux.org/viewtopic.php?id=204460, https://bugzilla.kernel.org/show_bug.cgi?id=60769
 
 - Nvidia HDMI/DP Audio Stutter/Slow when Passed Through
 
-  Fix: Enable MSI for the affected device: http://vfio.blogspot.co.uk/2014/09/vfio-interrupts-and-how-to-coax-windows.html
+  Fix - Enable MSI for the affected device: http://vfio.blogspot.co.uk/2014/09/vfio-interrupts-and-how-to-coax-windows.html
 
 Performance Optimisation and Tuning
 -----------------------------------
@@ -175,11 +175,19 @@ Development
 ### Running the Tests
 
 ```
-sudo dnf install bats ansible docker sed grep
+sudo dnf install bats ansible docker
 sudo systemctl start docker
 git clone https://github.com/alzadude/ansible-virt-host.git
+cd ansible-virt-host
 bats tests/
 ```
+
+Credits
+-------
+
+- http://vfio.blogspot.co.uk/2015/05/vfio-gpu-how-to-series-part-1-hardware.html (plus parts 2 - 5)
+- https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF
+- https://fedoraproject.org/wiki/Windows_Virtio_Drivers
 
 License
 -------
