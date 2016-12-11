@@ -99,27 +99,27 @@ After running the example playbook shown above and restarting the host system, i
   TODO
 
 1. Create the Guest Definition
-```
-virt-install \
- --name my-guest \
- --boot uefi \
- --ram 8192 \
- --cpu host \
- --vcpus 4 \
- --os-type windows \
- --os-variant win10 \
- --disk size=100,bus=scsi,discard=unmap,format=qcow2 \
- --disk <path-to-windows-10-iso-image>,device=cdrom,bus=ide \
- --disk /usr/share/virtio-win/virtio-win.iso,device=cdrom,bus=ide \
- --controller type=scsi,model=virtio-scsi \
- --network default,model=virtio \
- --graphics spice,listen=0.0.0.0 \
- --input tablet \
- --host-device <pci-id-of-host-vga-device> \
- --host-device <pci-id-of-host-audio-device> \
- --noautoconsole \
- --print-xml > my-guest.xml
-```
+  ```
+  virt-install \
+   --name my-guest \
+   --boot uefi \
+   --ram 8192 \
+   --cpu host \
+   --vcpus 4 \
+   --os-type windows \
+   --os-variant win10 \
+   --disk size=100,bus=scsi,discard=unmap,format=qcow2 \
+   --disk <path-to-windows-10-iso-image>,device=cdrom,bus=ide \
+   --disk /usr/share/virtio-win/virtio-win.iso,device=cdrom,bus=ide \
+   --controller type=scsi,model=virtio-scsi \
+   --network default,model=virtio \
+   --graphics spice,listen=0.0.0.0 \
+   --input tablet \
+   --host-device <pci-id-of-host-vga-device> \
+   --host-device <pci-id-of-host-audio-device> \
+   --noautoconsole \
+   --print-xml > my-guest.xml
+  ```
 1. Edit the Libvirt Definition if Necessary
 
   e.g. for Nvidia GPUs:
@@ -128,17 +128,20 @@ virt-install \
   TODO Define an XSL transform to automate this step.
 
 1. Define the Guest
-```
-virsh define my-guest.xml --validate
-```
+
+  ```
+  virsh define my-guest.xml --validate
+  ```
 1. Start the Guest
-```
-virsh start my-guest
-```
+
+  ```
+  virsh start my-guest
+  ```
 1. Complete the Windows Installation
-```
-virt-viewer my-guest
-```
+
+  ```
+  virt-viewer my-guest
+  ```
 
 Troubleshooting
 ---------------
