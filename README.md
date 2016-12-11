@@ -5,7 +5,7 @@ ansible-virt-host
 
 A role for configuring a Linux system to host Libvirt guests, with OVMF UEFI firmware.
 
-Initially focused on supporting Windows guests, with PCI passthrough possible for any non-boot VGA devices).
+Initially focused on supporting Windows guests, with PCI passthrough possible for any non-boot VGA devices.
 
 **No more rebooting into Windows in order to play Windows-only AAA games!**
 
