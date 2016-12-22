@@ -187,6 +187,7 @@ Credits
 
 - http://vfio.blogspot.co.uk/2015/05/vfio-gpu-how-to-series-part-1-hardware.html (plus parts 2 - 5)
 - https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF
+- https://bbs.archlinux.org/viewtopic.php?id=206358 (for recipe to run without root)
 - https://fedoraproject.org/wiki/Windows_Virtio_Drivers
 
 License
